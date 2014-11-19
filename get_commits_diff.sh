@@ -6,4 +6,4 @@ get_last_commits()
 		done
 }
 
-git diff --shortstat $(get_last_commits) *.tar.gz
+git diff --name-only $(get_last_commits) *.tar.gz
