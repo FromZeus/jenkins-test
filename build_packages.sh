@@ -1,7 +1,5 @@
 build_packs()
 {
-	for i in $packs
-		do
 			local depends
 			local dep
 			wget "$PURL"
@@ -43,8 +41,6 @@ build_packs()
 			echo "Cleaning..."
 			sudo apt-get autoremove $(apt-cache showsrc $PNAME | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g')
 			find . -type f -not -name '*.sh' | xargs rm
-					
-		done
 }
 
 build_packs
