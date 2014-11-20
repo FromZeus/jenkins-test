@@ -19,7 +19,7 @@ build_packs()
 			depends=${depends%%upgraded*}
 			sudo apt-get build-dep "$PNAME" -y
 
-			for k in $depends
+			for k in ${depends[@]}
 				do
 					dependences+=("$k")
 				done
