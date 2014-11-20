@@ -1,8 +1,3 @@
-PURL="https://pypi.python.org/packages/source/B/Babel/Babel-1.3.tar.gz#md5=5264ceb02717843cbc9ffce8e6e06bdb"
-TARGZ="Babel-1.3"
-EMAIL="asteroid56@yandex.ru"
-PNAME="python-babel"
-
 build_packs()
 {
 			echo "$PURL"
