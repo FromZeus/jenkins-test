@@ -1,3 +1,8 @@
+PURL="https://pypi.python.org/packages/source/B/Babel/Babel-1.3.tar.gz#md5=5264ceb02717843cbc9ffce8e6e06bdb"
+TARGZ="Babel-1.3"
+EMAIL="asteroid56@yandex.ru"
+PNAME="python-babel"
+
 build_packs()
 {
 			echo "$PURL"
@@ -13,7 +18,7 @@ build_packs()
 			cd "$TARGZ"
 			dh_make -e "$EMAIL" -s -y -f "../$TARGZ"
 
-			sudo apt-get autoremove $(apt-cache showsrc "$PNAME" | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g')
+			sudo apt-get autoremove -y $(apt-cache showsrc "$PNAME" | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g') && echo "Yes, do as I say!"
 			depends=$(apt-get -s build-dep "$PNAME")
 			depends=${depends#*installed:}
 			depends=${depends%%upgraded*}
@@ -45,7 +50,7 @@ build_packs()
 			DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -rfakeroot -uc -us -tc
 			cd ..
 			echo "Cleaning..."
-			sudo apt-get autoremove $(apt-cache showsrc "$PNAME" | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g')
+			sudo apt-get autoremove -y $(apt-cache showsrc "$PNAME" | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g') && echo "Yes, do as I say!"
 			find . -type f -not -name '*.sh' | xargs rm
 }
 
