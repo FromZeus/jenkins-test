@@ -1,5 +1,10 @@
 build_packs()
 {
+			echo "$PURL"
+			echo "$TARGZ"
+			echo "$EMAIL"
+			echo "$PNAME"
+
 			local depends
 			local dep
 			local dependences
