@@ -13,7 +13,7 @@ build_packs()
 			cd "$TARGZ"
 			dh_make -e "$EMAIL" -s -y -f "../$TARGZ"
 
-			sudo apt-get autoremove $(apt-cache showsrc $PNAME | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g')
+			#sudo apt-get autoremove $(apt-cache showsrc $PNAME | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g')
 			depends=$(apt-get -s build-dep "$PNAME")
 			depends=${depends#*installed:}
 			depends=${depends%%upgraded*}
@@ -45,7 +45,7 @@ build_packs()
 			DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -rfakeroot -uc -us -tc
 			cd ..
 			echo "Cleaning..."
-			sudo apt-get autoremove $(apt-cache showsrc $PNAME | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g')
+			#sudo apt-get autoremove $(apt-cache showsrc $PNAME | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g')
 			find . -type f -not -name '*.sh' | xargs rm
 }
 
