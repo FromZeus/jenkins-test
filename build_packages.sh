@@ -2,6 +2,7 @@ build_packs()
 {
 			local depends
 			local dep
+			local dependences
 			wget "$PURL"
 			mkdir "$TARGZ"
 			cd "$TARGZ"
