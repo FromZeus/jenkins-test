@@ -5,10 +5,11 @@ build_packs()
 			local depends
 			local dep
 			wget "$PURL"
-			mkdir $TARGZ
-			cd $TARGZ
+			mkdir "$TARGZ"
+			cd "$TARGZ"
 			dh_make -e "$EMAIL" -s -y -f "../$TARGZ"
 
+			sudo apt-get autoremove $(apt-cache showsrc $PNAME | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g')
 			depends=$(apt-get -s build-dep "$PNAME")
 			depends=${depends#*installed:}
 			depends=${depends%%upgraded*}
