@@ -1,40 +1,51 @@
+print_pv()
+{
+	echo $(python -V)
+}
+
 build_packs()
 {
-			echo "$PURL"
-			echo "$TARGZ"
-			echo "$EMAIL"
+			PNAME="python-babel"
+			TARGZ="Babel-1.3"
+			PURL="https://pypi.python.org/packages/source/B/Babel/Babel-1.3.tar.gz#md5=5264ceb02717843cbc9ffce8e6e06bdb"
+			EMAIL="asteroid56@yandex.ru"
+
 			echo "$PNAME"
+			echo "$TARGZ"
+			echo "$PURL"
+			echo "$EMAIL"
 
 			local depends
 			local dep
-			local dependences
+			local pv
+			local depy2
+			local depy3
+
 			wget "$PURL"
-			mkdir "$TARGZ"
-			cd "$TARGZ"
-			dh_make -e "$EMAIL" -s -y -f "../$TARGZ"
+			mkdir "${TARGZ,,}"
+			cd "${TARGZ,,}"
+			dh_make -e "$EMAIL" -s -y -f "../$TARGZ.tar.gz"
 
-			#sudo apt-get autoremove -y $(apt-cache showsrc "$PNAME" | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g') && echo "Yes, do as I say!"
-			depends=$(apt-get -s build-dep "$PNAME")
-			depends=${depends#*installed:}
-			depends=${depends%%upgraded*}
+			depends=$(apt-cache showsrc python-babel)
+			depends=${depends#*Build-Depends: }
+			depends=${depends%%Architecture:*}
+			depends=$(echo $depends | sed -e 's/, /,/g')
+			depy2=${depends%% | *}
+			depy3=${depends##* | }
+			
 			sudo apt-get build-dep "$PNAME" -y
-
-			for k in ${depends[@]}
-				do
-					dependences+=("$k")
-				done
-			dependences=(${dependences[@]::${#dependences[@]} - 1})
-
-			for k in ${dependences[@]}
-				do
-					dep+="$k,"
-				done
 
 			cat "debian/control" | while IFS='' read -a line
 				do
 					if [[ ${line} == *Build-Depends:* ]]
 						then
-							echo "Build-Depends: $dep" >> "debian/control.buf"
+							case "$(python --version 2>&1)" in *" 2."*)
+								echo "Build-Depends: $depy2" >> "debian/control.buf"
+								;;
+							*)
+								echo "Build-Depends: $depy3" >> "debian/control.buf"
+								;;
+							esac
 						else
 							echo "$line" >> "debian/control.buf"
 					fi
@@ -45,8 +56,7 @@ build_packs()
 			DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -rfakeroot -uc -us -tc
 			cd ..
 			echo "Cleaning..."
-			#sudo apt-get autoremove -y $(apt-cache showsrc "$PNAME" | sed -e '/Build-Depends/!d;s/Build-Depends: \|,\|([^)]*),*\|\[[^]]*\]//g') && echo "Yes, do as I say!"
-			find . -type f -not -name '*.sh' | xargs rm
+			#find . -type f -not -name '*.sh' -not -name '*.deb' | xargs rm
 }
 
 build_packs
