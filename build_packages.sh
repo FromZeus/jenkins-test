@@ -2,10 +2,10 @@
 
 build_packs()
 {
-			#PNAME="python-babel"
-			#DIRNAME="Babel-1.3"
-			#PURL="https://pypi.python.org/packages/source/B/Babel/Babel-1.3.tar.gz#md5=5264ceb02717843cbc9ffce8e6e06bdb"
-			#EMAIL="asteroid56@yandex.ru"
+			PNAME="python-babel"
+			DIRNAME="Babel-1.3"
+			PURL="https://pypi.python.org/packages/source/B/Babel/Babel-1.3.tar.gz#md5=5264ceb02717843cbc9ffce8e6e06bdb"
+			EMAIL="asteroid56@yandex.ru"
 
 			echo "$PNAME"
 			echo "$DIRNAME"
@@ -23,7 +23,7 @@ build_packs()
 			mkdir "${DIRNAME,,}"
 			buf="$(find . -name '*.tar.gz')"
 			cd "${DIRNAME,,}"
-			dh_make -e "$EMAIL" -s -y -f "../$buf"
+			dh_make -e "$EMAIL" -s -y -f ".$buf"
 
 			depends=$(apt-cache showsrc python-babel)
 			depends=${depends#*Build-Depends: }
@@ -63,7 +63,7 @@ build_packs()
 			DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -rfakeroot -uc -us -tc
 			cd ..
 			echo "Cleaning..."
-			find . -maxdepth 1 -not -name '*git*' -not -name '*.sh' -not -name '*.deb' -not -name '.' | xargs rm -rfd
+			find . -maxdepth 1 -not -name '*git*' -not -name '*.sh' -not -name '*.deb' -not -name '*.*' | xargs rm -rfd
 }
 
 build_packs
