@@ -17,6 +17,7 @@ build_packs()
 			local pv
 			local depy2
 			local depy3
+			local buf
 
 			wget "$PURL"
 			mkdir "${TARGZ,,}"
@@ -30,7 +31,7 @@ build_packs()
 			depy2=${depends%% | *}
 			depy3=${depends##* | }
 			
-			sudo apt-get build-dep "$PNAME" -y
+			#sudo apt-get build-dep "$PNAME" -y
 
 			cat "debian/control" | while IFS='' read -a line
 				do
@@ -38,9 +39,17 @@ build_packs()
 						then
 							case "$(python --version 2>&1)" in *" 2."*)
 								echo "Build-Depends: $depy2" >> "debian/control.buf"
+								for i in $(echo $depy2 | sed -e 's/,/ /g')
+									do
+										sudo apt-get install "$i" -y
+									done
 								;;
 							*)
 								echo "Build-Depends: $depy3" >> "debian/control.buf"
+								for i in $(echo $depy3 | sed -e 's/,/ /g')
+									do
+										sudo apt-get install "$i" -y
+									done
 								;;
 							esac
 						else
