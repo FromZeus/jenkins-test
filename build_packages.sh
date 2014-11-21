@@ -51,7 +51,7 @@ build_packs()
 			DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -rfakeroot -uc -us -tc
 			cd ..
 			echo "Cleaning..."
-			#find . -type f -not -name '*.sh' -not -name '*.deb' | xargs rm
+			find . -not -name '*.sh' -not -name '*.deb' | xargs rm
 }
 
 build_packs
