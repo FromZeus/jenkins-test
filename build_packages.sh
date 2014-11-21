@@ -1,3 +1,5 @@
+#!/bin/bash
+
 build_packs()
 {
 			#PNAME="python-babel"
