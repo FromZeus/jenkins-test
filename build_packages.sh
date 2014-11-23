@@ -25,7 +25,7 @@ build_packs()
 			cd "${DIRNAME,,}"
 			dh_make -e "$EMAIL" -s -y -f ".$buf"
 
-			depends=$(apt-cache showsrc python-babel)
+			depends=$(apt-cache showsrc $PNAME)
 			depends=${depends#*Build-Depends: }
 			depends=${depends%%Architecture:*}
 			depends=$(echo $depends | sed -e 's/, /,/g')
