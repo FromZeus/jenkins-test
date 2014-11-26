@@ -19,8 +19,8 @@ build_packs()
 			local depy3
 			local buf
 
-			sudo apt-get install build-essential autoconf automake autotools-dev dh-make debhelper devscripts fakeroot xutils lintian pbuilder
 			sudo su -c 'echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers'
+			sudo apt-get install build-essential autoconf automake autotools-dev dh-make debhelper devscripts fakeroot xutils lintian pbuilder -y
 
 			wget "$PURL"
 			mkdir "${DIRNAME,,}"
