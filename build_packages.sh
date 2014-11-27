@@ -19,7 +19,10 @@ build_packs()
 			local depy3
 			local buf
 
-			sudo su -c 'echo "jenkins ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers'
+			if [[ -z $(sudo su root -c 'cat /etc/sudoers | grep jenkins') ]]
+				then
+					sudo su -c 'echo "jenkins ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers'
+			fi
 			sudo apt-get install build-essential autoconf automake autotools-dev dh-make debhelper devscripts fakeroot xutils lintian pbuilder -y
 
 			wget "$PURL"
